@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }} - Disney Clone{% endblock %}
+
+{% block content %}
+<!-- Movie Hero Section -->
+<section class="movie-hero position-relative">
+    <div class="movie-hero-bg" style="background-image: url('{{ movie.poster }}');"></div>
+    <div class="movie-hero-overlay"></div>
+    
+    <div class="container position-relative">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-4">
+                <div class="movie-poster-large">
+                    <img src="{{ movie.poster }}" class="img-fluid rounded shadow-lg" alt="{{ movie.title }}">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="movie-details text-white">
+                    <h1 class="display-4 fw-bold mb-3">{{ movie.title }}</h1>
+                    <div class="movie-meta-large mb-4">
+                        <span class="badge bg-disney-gold text-dark me-3 fs-6">{{ movie.year }}</span>
+                        <span class="badge bg-secondary me-3 fs-6">{{ movie.duration }}</span>
+                        <span class="badge bg-warning text-dark fs-6">
+                            <i class="fas fa-star me-1"></i>{{ movie.rating }}/10
+                        </span>
+                    </div>
+                    <p class="lead mb-4">{{ movie.description }}</p>
+                    <div class="movie-genre-large mb-4">
+                        {% for genre in movie.genre.split(', ') %}
+                        <span class="badge bg-outline-light text-light me-2 mb-2 fs-6">{{ genre }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="movie-actions-large">
+                        <button class="btn btn-disney-primary btn-lg me-3" 
+                                onclick="openTrailer('{{ movie.trailer }}', '{{ movie.title }}')">
+                            <i class="fas fa-play me-2"></i>Assistir Trailer
+                        </button>
+                        <button class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-heart me-2"></i>Adicionar aos Favoritos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Movie Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Synopsis -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-disney-blue mb-3">
+                            <i class="fas fa-book-open me-2"></i>Sinopse
+                        </h3>
+                        <p class="card-text">{{ movie.description }}</p>
+                    </div>
+                </div>
+                
+                <!-- Trailer Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-disney-blue mb-3">
+                            <i class="fas fa-video me-2"></i>Trailer Oficial
+                        </h3>
+                        <div class="ratio ratio-16x9">
+                            <iframe src="{{ movie.trailer }}" allowfullscreen class="rounded"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Movie Stats -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title text-disney-blue mb-3">Informações</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <strong>Ano de Lançamento:</strong> {{ movie.year }}
+                            </li>
+                            <li class="mb-2">
+                                <strong>Duração:</strong> {{ movie.duration }}
+                            </li>
+                            <li class="mb-2">
+                                <strong>Gênero:</strong> {{ movie.genre }}
+                            </li>
+                            <li class="mb-2">
+                                <strong>Avaliação:</strong> 
+                                <span class="text-warning">
+                                    {% for i in range(5) %}
+                                        {% if i < (movie.rating / 2)|int %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                                {{ movie.rating }}/10
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Share -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title text-disney-blue mb-3">Compartilhar</h4>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="shareMovie()">
+                                <i class="fas fa-share-alt me-2"></i>Compartilhar Filme
+                            </button>
+                            <button class="btn btn-outline-success" onclick="downloadInfo()">
+                                <i class="fas fa-download me-2"></i>Baixar Informações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Movies (placeholder) -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h3 class="text-disney-blue mb-4">Filmes Similares</h3>
+        <div class="row">
+            <div class="col-12">
+                <p class="text-muted text-center py-4">
+                    <i class="fas fa-magic fa-2x mb-3"></i><br>
+                    Mais filmes incríveis em breve!
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Navigation -->
+<section class="py-4 bg-disney-blue text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <a href="{{ url_for('movies') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left me-2"></i>Voltar aos Filmes
+                </a>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-light">
+                    <i class="fas fa-home me-2"></i>Página Inicial
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trailer Modal -->
+<div class="modal fade" id="trailerModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="trailerModalTitle">{{ movie.title }} - Trailer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe id="trailerIframe" src="" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Trailer Modal Functions
+function openTrailer(trailerUrl, movieTitle) {
+    document.getElementById('trailerModalTitle').textContent = `${movieTitle} - Trailer`;
+    document.getElementById('trailerIframe').src = trailerUrl;
+    new bootstrap.Modal(document.getElementById('trailerModal')).show();
+}
+
+// Clear iframe when modal closes
+document.getElementById('trailerModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('trailerIframe').src = '';
+});
+
+// Share movie function
+function shareMovie() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ movie.title }} - Disney Clone',
+            text: '{{ movie.description }}',
+            url: window.location.href
+        });
+    } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copiado para a área de transferência!');
+        });
+    }
+}
+
+// Download movie info (mock function)
+function downloadInfo() {
+    const movieInfo = {
+        title: '{{ movie.title }}',
+        year: {{ movie.year }},
+        duration: '{{ movie.duration }}',
+        genre: '{{ movie.genre }}',
+        rating: {{ movie.rating }},
+        description: '{{ movie.description }}'
+    };
+    
+    const dataStr = JSON.stringify(movieInfo, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(dataBlob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = '{{ movie.title }}_info.json';
+    link.click();
+    
+    URL.revokeObjectURL(url);
+}
+
+// Parallax effect for hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroSection = document.querySelector('.movie-hero');
+    if (heroSection) {
+        const rate = scrolled * -0.5;
+        heroSection.style.transform = `translateY(${rate}px)`;
+    }
+});
+</script>
+{% endblock %}

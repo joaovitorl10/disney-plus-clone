@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre - Disney Clone{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-gradient-disney text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">Sobre o Projeto</h1>
+                <p class="lead mb-0">Conheça mais sobre este clone da Disney feito com Python</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <i class="fas fa-magic fa-5x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="about-content">
+                    <h2 class="text-disney-blue mb-4">Bem-vindo ao Disney Clone</h2>
+                    <p class="lead mb-4">
+                        Este projeto foi desenvolvido como uma demonstração de como criar 
+                        uma plataforma de streaming inspirada na Disney usando Python e Flask.
+                    </p>
+                    
+                    <h3 class="text-disney-blue mb-3">Tecnologias Utilizadas</h3>
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fab fa-python text-warning me-2"></i>
+                                    <strong>Python</strong> - Linguagem principal
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-server text-success me-2"></i>
+                                    <strong>Flask</strong> - Framework web
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fab fa-html5 text-danger me-2"></i>
+                                    <strong>HTML5</strong> - Estrutura das páginas
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fab fa-css3-alt text-primary me-2"></i>
+                                    <strong>CSS3</strong> - Estilização
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fab fa-js-square text-warning me-2"></i>
+                                    <strong>JavaScript</strong> - Interatividade
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fab fa-bootstrap text-purple me-2"></i>
+                                    <strong>Bootstrap</strong> - Design responsivo
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-disney-blue mb-3">Funcionalidades</h3>
+                    <div class="row mb-5">
+                        <div class="col-md-6 mb-3">
+                            <div class="feature-card text-center p-4 border rounded">
+                                <i class="fas fa-film fa-3x text-disney-gold mb-3"></i>
+                                <h5>Catálogo de Filmes</h5>
+                                <p class="text-muted mb-0">Navegue por uma coleção de filmes Disney</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="feature-card text-center p-4 border rounded">
+                                <i class="fas fa-play-circle fa-3x text-disney-gold mb-3"></i>
+                                <h5>Trailers Integrados</h5>
+                                <p class="text-muted mb-0">Assista aos trailers diretamente na plataforma</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="feature-card text-center p-4 border rounded">
+                                <i class="fas fa-search fa-3x text-disney-gold mb-3"></i>
+                                <h5>Busca e Filtros</h5>
+                                <p class="text-muted mb-0">Encontre filmes por título, ano ou avaliação</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="feature-card text-center p-4 border rounded">
+                                <i class="fas fa-mobile-alt fa-3x text-disney-gold mb-3"></i>
+                                <h5>Design Responsivo</h5>
+                                <p class="text-muted mb-0">Funciona perfeitamente em todos os dispositivos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-disney-blue mb-3">Como Executar</h3>
+                    <div class="bg-light p-4 rounded mb-4">
+                        <h6>1. Clone o repositório:</h6>
+                        <code class="d-block mb-3">git clone [url-do-repositorio]</code>
+                        
+                        <h6>2. Instale as dependências:</h6>
+                        <code class="d-block mb-3">pip install -r requirements.txt</code>
+                        
+                        <h6>3. Execute a aplicação:</h6>
+                        <code class="d-block mb-3">python app.py</code>
+                        
+                        <h6>4. Acesse no navegador:</h6>
+                        <code class="d-block">http://localhost:5000</code>
+                    </div>
+                    
+                    <h3 class="text-disney-blue mb-3">Estrutura do Projeto</h3>
+                    <div class="bg-light p-4 rounded mb-5">
+                        <pre class="mb-0"><code>disney_clone/
+├── app.py                 # Aplicação Flask principal
+├── requirements.txt       # Dependências Python
+├── static/               # Arquivos estáticos
+│   ├── css/
+│   │   └── style.css     # Estilos personalizados
+│   ├── js/
+│   │   └── main.js       # JavaScript customizado
+│   └── images/           # Imagens do projeto
+└── templates/            # Templates HTML
+    ├── base.html         # Template base
+    ├── index.html        # Página inicial
+    ├── movies.html       # Lista de filmes
+    ├── movie_detail.html # Detalhes do filme
+    └── about.html        # Esta página</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Developer Info -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h3 class="text-disney-blue mb-4">Desenvolvido com ❤️</h3>
+                <p class="lead text-muted mb-4">
+                    Este projeto foi criado como uma demonstração de desenvolvimento web 
+                    com Python, mostrando como criar uma interface moderna e interativa.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="btn btn-outline-primary me-2">
+                        <i class="fab fa-github me-2"></i>GitHub
+                    </a>
+                    <a href="#" class="btn btn-outline-info me-2">
+                        <i class="fab fa-linkedin me-2"></i>LinkedIn
+                    </a>
+                    <a href="#" class="btn btn-outline-success">
+                        <i class="fas fa-envelope me-2"></i>Contato
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-disney-blue text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="mb-3">Pronto para explorar?</h3>
+                <p class="lead mb-0">
+                    Volte para a página inicial e descubra todos os filmes incríveis disponíveis!
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{{ url_for('index') }}" class="btn btn-disney-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>Ir para Início
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

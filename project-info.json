@@ -1,0 +1,90 @@
+{
+  "id": "disney-plus-clone",
+  "title": "Disney+ Clone",
+  "description": "Clone completo da plataforma Disney+ com Python Flask, featuring filmes Disney, Marvel, Pixar e Star Wars",
+  "longDescription": "Uma réplica autêntica do Disney+ desenvolvida com Python Flask, apresentando interface moderna, catálogo completo de filmes Disney e Marvel, trailers integrados do YouTube, sistema de busca avançado e design responsivo. Inclui navegação por estúdios, cores oficiais Disney+ e funcionalidades interativas.",
+  "technologies": [
+    "Python",
+    "Flask",
+    "HTML5",
+    "CSS3", 
+    "JavaScript",
+    "Bootstrap",
+    "YouTube API",
+    "Font Awesome"
+  ],
+  "features": [
+    "Interface autêntica Disney+ com cores oficiais",
+    "Catálogo de filmes Disney, Marvel, Pixar e Star Wars",
+    "Trailers reais integrados do YouTube",
+    "Sistema de busca e filtros avançados",
+    "Design responsivo para todos dispositivos",
+    "Navegação por estúdios separados",
+    "Carrossel de filmes em destaque",
+    "Páginas de detalhes completas"
+  ],
+  "highlights": [
+    "🎨 Design System autêntico Disney+",
+    "🎬 16+ filmes com trailers reais",
+    "🏰 5 estúdios separados (Disney, Marvel, etc)",
+    "📱 100% responsivo",
+    "⚡ Execução automática no navegador"
+  ],
+  "category": "Web Application",
+  "type": "Full Stack",
+  "difficulty": "Intermediate",
+  "demoUrl": "http://127.0.0.1:5000",
+  "githubUrl": "https://github.com/joaovitorl10/disney-plus-clone",
+  "codeUrl": "https://github.com/joaovitorl10/disney-plus-clone",
+  "imageUrl": "https://raw.githubusercontent.com/joaovitorl10/disney-plus-clone/main/static/images/preview.png",
+  "tags": [
+    "Python",
+    "Flask", 
+    "Disney+",
+    "Streaming",
+    "Web Development",
+    "Frontend",
+    "Backend",
+    "API",
+    "Responsive Design",
+    "Bootstrap"
+  ],
+  "status": "Completo",
+  "createdAt": "2024-11-02",
+  "updatedAt": "2024-11-02",
+  "developmentTime": "1 dia",
+  "complexity": "Intermediário",
+  "codeLines": "~800 linhas",
+  "filesCount": "10+",
+  "studios": ["Disney", "Marvel", "Pixar", "Star Wars", "National Geographic"],
+  "moviesCount": 16,
+  "howItWorks": {
+    "backend": "Flask framework com rotas para páginas e API endpoints JSON para filmes",
+    "frontend": "HTML5 semântico com CSS3 (Flexbox/Grid) e JavaScript para interatividade",
+    "styling": "Bootstrap 5 + CSS customizado com variáveis CSS para tema Disney+",
+    "data": "Dados de filmes estruturados em Python com informações completas",
+    "media": "Trailers integrados via YouTube Embed API",
+    "responsive": "Design mobile-first com breakpoints para tablet e desktop"
+  },
+  "technicalDetails": {
+    "architecture": "MVC com Flask",
+    "templating": "Jinja2 templates",
+    "styling": "CSS Grid + Flexbox",
+    "javascript": "Vanilla JS ES6+",
+    "icons": "Font Awesome 6",
+    "fonts": "Google Fonts (Poppins)",
+    "colors": "Paleta oficial Disney+ (#040E2E, #1E40AF, #6366F1, #06B6D4)",
+    "responsive": "Mobile-first com breakpoints 576px, 768px, 1200px"
+  },
+  "installation": {
+    "requirements": ["Python 3.8+", "pip", "Navegador moderno"],
+    "steps": [
+      "git clone https://github.com/joaovitorl10/disney-plus-clone.git",
+      "cd disney-plus-clone",
+      "pip install -r requirements.txt", 
+      "python app.py",
+      "Acesse http://127.0.0.1:5000"
+    ],
+    "quickStart": "Duplo clique em executar_disney.bat (Windows)"
+  }
+}

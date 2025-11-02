@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}Disney Clone - Página Inicial{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="hero-bg"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-6">
+                <div class="hero-content text-white">
+                    <h1 class="display-4 fw-bold mb-4 text-gradient">
+                        Bem-vindo ao Mundo Mágico da Disney & Marvel
+                    </h1>
+                    <p class="lead mb-4">
+                        Descubra os filmes mais encantadores da Disney e as aventuras épicas da Marvel. 
+                        Assista aos trailers, explore personagens fascinantes e mergulhe 
+                        em histórias que tocam o coração e despertam a imaginação.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('movies') }}" class="btn btn-disney-primary btn-lg me-3">
+                            <i class="fas fa-play me-2"></i>Explorar Filmes
+                        </a>
+                        <a href="#featured" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-star me-2"></i>Em Destaque
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    <div class="floating-card">
+                        <!-- Disney+ Studios Brands -->
+                        <div class="studios-brands mb-4">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-4 col-md-2">
+                                    <span class="studio-brand" style="color: white; font-weight: bold; font-size: 0.9rem;">Disney</span>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <span class="studio-brand" style="color: white; font-weight: bold; font-size: 0.9rem;">PIXAR</span>
+                                </div>
+                                <div class="col-4 col-md-2">
+                                    <span class="studio-brand" style="color: var(--marvel-red); font-weight: bold; font-size: 0.9rem;">MARVEL</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <span class="studio-brand" style="color: #FFE81F; font-weight: bold; font-size: 0.9rem;">STAR WARS</span>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <span class="studio-brand" style="color: #FDB863; font-weight: bold; font-size: 0.8rem;">NAT GEO</span>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fas fa-play-circle fa-4x mb-3" style="color: var(--disney-cyan);"></i>
+                        <h3 class="text-white">Streaming de Entretenimento</h3>
+                        <p class="text-white-50 mb-0">Filmes, séries e muito mais</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <a href="#featured" class="text-white">
+            <i class="fas fa-chevron-down fa-2x animate-bounce"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Featured Movies Section -->
+<section id="featured" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-disney-blue mb-3">Filmes em Destaque</h2>
+            <p class="lead text-muted">Descubra os filmes mais populares da Disney e as aventuras épicas da Marvel</p>
+        </div>
+        
+        <!-- Featured Movies Carousel -->
+        <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for movie in featured_movies %}
+                <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="{{ loop.index0 }}" 
+                        {% if loop.first %}class="active"{% endif %}></button>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-inner">
+                {% for movie in featured_movies %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="movie-poster-container">
+                                <img src="{{ movie.poster }}" class="movie-poster img-fluid rounded shadow-lg" 
+                                     alt="{{ movie.title }}">
+                                <div class="play-overlay">
+                                    <button class="btn btn-play" onclick="openTrailer('{{ movie.trailer }}', '{{ movie.title }}')">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="movie-info">
+                                <h3 class="movie-title text-disney-blue mb-3">{{ movie.title }}</h3>
+                                <div class="movie-meta mb-3">
+                                    <span class="badge bg-disney-gold text-dark me-2">{{ movie.year }}</span>
+                                    <span class="badge bg-secondary me-2">{{ movie.duration }}</span>
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-star me-1"></i>{{ movie.rating }}
+                                    </span>
+                                </div>
+                                <p class="movie-description text-muted mb-4">{{ movie.description }}</p>
+                                <div class="movie-actions">
+                                    <button class="btn btn-disney-primary me-3" 
+                                            onclick="openTrailer('{{ movie.trailer }}', '{{ movie.title }}')">
+                                        <i class="fas fa-play me-2"></i>Assistir Trailer
+                                    </button>
+                                    <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" 
+                                       class="btn btn-outline-primary">
+                                        <i class="fas fa-info-circle me-2"></i>Mais Detalhes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 bg-disney-blue text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-film fa-3x mb-3 text-disney-gold"></i>
+                    <h3 class="counter" data-target="8">0</h3>
+                    <p class="lead">Filmes Disponíveis</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-star fa-3x mb-3 text-disney-gold"></i>
+                    <h3 class="counter" data-target="5">0</h3>
+                    <p class="lead">Filmes em Destaque</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-clock fa-3x mb-3 text-disney-gold"></i>
+                    <h3 class="counter" data-target="850">0</h3>
+                    <p class="lead">Minutos de Diversão</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-heart fa-3x mb-3 text-disney-gold"></i>
+                    <h3 class="counter" data-target="100">0</h3>
+                    <p class="lead">% de Magia</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-6 fw-bold text-disney-blue mb-4">
+                    Pronto para a Aventura?
+                </h2>
+                <p class="lead text-muted mb-4">
+                    Explore nossa coleção completa de filmes Disney e descubra 
+                    histórias que inspiram, emocionam e encantam pessoas de todas as idades.
+                </p>
+                <a href="{{ url_for('movies') }}" class="btn btn-disney-primary btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Começar Agora
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trailer Modal -->
+<div class="modal fade" id="trailerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="trailerModalTitle">Trailer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe id="trailerIframe" src="" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Trailer Modal Functions
+function openTrailer(trailerUrl, movieTitle) {
+    document.getElementById('trailerModalTitle').textContent = `${movieTitle} - Trailer`;
+    document.getElementById('trailerIframe').src = trailerUrl;
+    new bootstrap.Modal(document.getElementById('trailerModal')).show();
+}
+
+// Clear iframe when modal closes
+document.getElementById('trailerModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('trailerIframe').src = '';
+});
+
+// Counter Animation
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const increment = target / 100;
+        let current = 0;
+        
+        const updateCounter = () => {
+            if (current < target) {
+                current += increment;
+                counter.textContent = Math.ceil(current);
+                setTimeout(updateCounter, 20);
+            } else {
+                counter.textContent = target;
+            }
+        };
+        
+        updateCounter();
+    });
+}
+
+// Intersection Observer for counter animation
+const statsSection = document.querySelector('.bg-disney-blue');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateCounters();
+            observer.unobserve(entry.target);
+        }
+    });
+});
+
+if (statsSection) {
+    observer.observe(statsSection);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if studio == 'Disney' %}
+        Disney Clone - Filmes Disney
+    {% elif studio == 'Marvel' %}
+        Disney Clone - Filmes Marvel
+    {% else %}
+        Disney Clone - Todos os Filmes
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header {% if studio == 'Marvel' %}bg-gradient-marvel{% else %}bg-gradient-disney{% endif %} text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">
+                    {% if studio == 'Disney' %}
+                        <i class="fas fa-castle me-3"></i>Filmes Disney
+                    {% elif studio == 'Marvel' %}
+                        <i class="fas fa-bolt me-3"></i>Filmes Marvel
+                    {% else %}
+                        <i class="fas fa-film me-3"></i>Catálogo de Filmes
+                    {% endif %}
+                </h1>
+                <p class="lead mb-0">
+                    {% if studio == 'Disney' %}
+                        Explore a magia dos clássicos Disney
+                    {% elif studio == 'Marvel' %}
+                        Descubra o universo dos super-heróis Marvel
+                    {% else %}
+                        Explore nossa coleção completa de filmes Disney e Marvel
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                {% if studio == 'Marvel' %}
+                    <i class="fas fa-mask fa-5x opacity-50"></i>
+                {% else %}
+                    <i class="fas fa-film fa-5x opacity-50"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="py-4 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="search-box">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchInput" 
+                               placeholder="Buscar filmes...">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select class="form-select" id="sortSelect">
+                            <option value="title">Ordenar por Título</option>
+                            <option value="year">Ordenar por Ano</option>
+                            <option value="rating">Ordenar por Avaliação</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="filterYear">
+                            <option value="">Todos os Anos</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Movies Grid -->
+<section class="py-5">
+    <div class="container">
+        <!-- Movies Count -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <p class="text-muted mb-0">
+                    <span id="moviesCount">{{ movies|length }}</span> filme(s) encontrado(s)
+                </p>
+            </div>
+        </div>
+        
+        <!-- Movies Grid Container -->
+        <div class="row" id="moviesGrid">
+            {% for movie in movies %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 movie-card" 
+                 data-title="{{ movie.title|lower }}" 
+                 data-year="{{ movie.year }}" 
+                 data-rating="{{ movie.rating }}">
+                <div class="card movie-card-item h-100 shadow-sm">
+                    <div class="position-relative overflow-hidden">
+                        <img src="{{ movie.poster }}" class="card-img-top movie-poster-img" 
+                             alt="{{ movie.title }}" loading="lazy">
+                        
+                        <!-- Overlay with Actions -->
+                        <div class="movie-overlay">
+                            <div class="overlay-content">
+                                <button class="btn btn-play-round mb-2" 
+                                        onclick="openTrailer('{{ movie.trailer }}', '{{ movie.title }}')">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div class="overlay-actions">
+                                    <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" 
+                                       class="btn btn-sm btn-outline-light me-2">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-light" 
+                                            onclick="addToFavorites({{ movie.id }})">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Badge -->
+                        <div class="rating-badge">
+                            <i class="fas fa-star"></i>
+                            {{ movie.rating }}
+                        </div>
+                        
+                        <!-- Studio Badge -->
+                        {% if movie.studio == 'Marvel' %}
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-danger">
+                                <i class="fas fa-bolt me-1"></i>MARVEL
+                            </span>
+                        </div>
+                        {% else %}
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge text-dark" style="background-color: var(--disney-gold);">
+                                <i class="fas fa-castle me-1"></i>DISNEY
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title text-disney-blue mb-2">{{ movie.title }}</h5>
+                        <div class="movie-meta mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>{{ movie.year }}
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-clock me-1"></i>{{ movie.duration }}
+                            </small>
+                        </div>
+                        <p class="card-text text-muted small mb-3">
+                            {{ movie.description[:100] }}{% if movie.description|length > 100 %}...{% endif %}
+                        </p>
+                        <div class="movie-genre">
+                            {% for genre in movie.genre.split(', ') %}
+                            <span class="badge bg-light text-dark me-1 mb-1">{{ genre }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-disney-primary btn-sm" 
+                                    onclick="openTrailer('{{ movie.trailer }}', '{{ movie.title }}')">
+                                <i class="fas fa-play me-2"></i>Assistir Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center py-5" style="display: none;">
+            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">Nenhum filme encontrado</h4>
+            <p class="text-muted">Tente ajustar seus filtros de busca</p>
+        </div>
+    </div>
+</section>
+
+<!-- Load More Section (for future pagination) -->
+<section class="py-4 bg-light">
+    <div class="container text-center">
+        <p class="text-muted mb-3">Mostrando todos os {{ movies|length }} filmes disponíveis</p>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+            <i class="fas fa-home me-2"></i>Voltar ao Início
+        </a>
+    </div>
+</section>
+
+<!-- Trailer Modal -->
+<div class="modal fade" id="trailerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="trailerModalTitle">Trailer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe id="trailerIframe" src="" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Favorites Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="favoritesToast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="fas fa-heart text-danger me-2"></i>
+            <strong class="me-auto">Favoritos</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            Filme adicionado aos favoritos!
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Global variables
+let allMovies = [];
+let filteredMovies = [];
+
+// Initialize movies data
+document.addEventListener('DOMContentLoaded', function() {
+    allMovies = Array.from(document.querySelectorAll('.movie-card')).map(card => ({
+        element: card,
+        title: card.dataset.title,
+        year: parseInt(card.dataset.year),
+        rating: parseFloat(card.dataset.rating)
+    }));
+    filteredMovies = [...allMovies];
+    
+    // Setup event listeners
+    document.getElementById('searchInput').addEventListener('input', filterMovies);
+    document.getElementById('sortSelect').addEventListener('change', sortMovies);
+    document.getElementById('filterYear').addEventListener('change', filterMovies);
+});
+
+// Filter movies function
+function filterMovies() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const yearFilter = document.getElementById('filterYear').value;
+    
+    filteredMovies = allMovies.filter(movie => {
+        const matchesSearch = movie.title.includes(searchTerm);
+        const matchesYear = !yearFilter || movie.year.toString() === yearFilter;
+        return matchesSearch && matchesYear;
+    });
+    
+    sortMovies();
+}
+
+// Sort movies function
+function sortMovies() {
+    const sortBy = document.getElementById('sortSelect').value;
+    
+    filteredMovies.sort((a, b) => {
+        switch(sortBy) {
+            case 'title':
+                return a.title.localeCompare(b.title);
+            case 'year':
+                return b.year - a.year;
+            case 'rating':
+                return b.rating - a.rating;
+            default:
+                return 0;
+        }
+    });
+    
+    displayMovies();
+}
+
+// Display filtered and sorted movies
+function displayMovies() {
+    const grid = document.getElementById('moviesGrid');
+    const noResults = document.getElementById('noResults');
+    const countElement = document.getElementById('moviesCount');
+    
+    // Hide all movies first
+    allMovies.forEach(movie => {
+        movie.element.style.display = 'none';
+    });
+    
+    if (filteredMovies.length === 0) {
+        noResults.style.display = 'block';
+    } else {
+        noResults.style.display = 'none';
+        
+        // Show filtered movies in order
+        filteredMovies.forEach((movie, index) => {
+            movie.element.style.display = 'block';
+            movie.element.style.order = index;
+        });
+    }
+    
+    // Update count
+    countElement.textContent = filteredMovies.length;
+}
+
+// Trailer modal functions
+function openTrailer(trailerUrl, movieTitle) {
+    document.getElementById('trailerModalTitle').textContent = `${movieTitle} - Trailer`;
+    document.getElementById('trailerIframe').src = trailerUrl;
+    new bootstrap.Modal(document.getElementById('trailerModal')).show();
+}
+
+// Clear iframe when modal closes
+document.getElementById('trailerModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('trailerIframe').src = '';
+});
+
+// Add to favorites function
+function addToFavorites(movieId) {
+    // Simulate adding to favorites (in a real app, this would make an API call)
+    const toast = new bootstrap.Toast(document.getElementById('favoritesToast'));
+    toast.show();
+    
+    // Add visual feedback
+    event.target.classList.add('text-danger');
+    setTimeout(() => {
+        event.target.classList.remove('text-danger');
+    }, 1000);
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Lazy loading for images (if not supported natively)
+if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src || img.src;
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+</script>
+{% endblock %}
